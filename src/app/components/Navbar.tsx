@@ -50,55 +50,22 @@ export function Navbar() {
               <>
                 
                 <Link to="/admin/analytics" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Analytics</Link>
-                {/* <Link to="/admin/volunteers" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Volunteers</Link>
-                <Link to="/admin/suspects" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Suspects</Link> */}
               </>
             ) : (
               <>
                 <Link to="/dashboard/analytics" className="text-slate-700 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium">Analytics</Link>
                 <div className="relative group">
-                  {/* <button 
-                    className="text-slate-700 hover:bg-blue-50 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    Report & Check Suspect
-                    <svg className="ml-1 h-4 w-4 text-slate-500 group-hover:text-blue-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button> */}
+                
                   <div className="absolute left-0 top-full mt-1 w-64 bg-white border border-slate-200 rounded-md shadow-lg hidden group-hover:block z-50">
                     <div className="py-2">
-                      {/* <Link to="/suspect-repository/search" className="block px-4 py-3 text-sm text-slate-700 hover:bg-orange-50 hover:text-orange-800 border-l-4 border-transparent hover:border-orange-500 transition-colors">
-                        Suspect Repository
-                      </Link> */}
-                      {/* <Link to="/report-suspect" className="block px-4 py-3 text-sm text-slate-700 hover:bg-orange-50 hover:text-orange-800 border-l-4 border-transparent hover:border-orange-500 transition-colors">
-                        Report Suspect
-                      </Link>
-                      <a href="https://gac.gov.in/" target="_blank" rel="noopener noreferrer" className="block px-4 py-3 text-sm text-slate-700 hover:bg-orange-50 hover:text-orange-800 border-l-4 border-transparent hover:border-orange-500 transition-colors">
-                        File Appeal with GAC
-                      </a> */}
+                    
                     </div>
                   </div>
                 </div>
                 <div className="relative group">
-                  {/* <Link 
-                    to="/cyber-volunteer"
-                    className="text-slate-700 group-hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center focus:outline-none"
-                  >
-                    Cyber Volunteer */}
-                    {/* <svg className="ml-1 h-4 w-4 text-slate-500 group-hover:text-blue-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </Link> */}
+
                   <div className="absolute left-0 top-full mt-1 w-60 bg-white border border-slate-200 rounded-md shadow-lg hidden group-hover:block z-50">
                     <div className="py-2">
-                      {/* <Link to="/cyber-volunteer/register" className="block px-4 py-3 text-sm text-slate-700 hover:bg-orange-50 hover:text-orange-800 border-l-4 border-transparent hover:border-orange-500 transition-colors">
-                        Register as Volunteer
-                      </Link>
-                      <Link to="/cyber-volunteer" className="block px-4 py-3 text-sm text-slate-700 hover:bg-orange-50 hover:text-orange-800 border-l-4 border-transparent hover:border-orange-500 transition-colors">
-                        About Cyber Volunteer
-                      </Link> */}
                     </div>
                   </div>
                 </div>

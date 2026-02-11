@@ -67,13 +67,6 @@ export default function App() {
           <Route path="/citizen/complaint/:id" element={<CitizenComplaintDetails />} />
           <Route path="/dashboard/analytics" element={<AnalyticsDashboard />} />
           <Route path="/dashboard/official" element={<PoliceDashboard />} />
-          <Route path="/suspect-repository/search" element={<SuspectIdentifierSearch />} />
-          <Route path="/report-suspect" element={<ReportSuspect />} />
-          
-          {/* Cyber Volunteer Routes */}
-          <Route path="/cyber-volunteer" element={<CyberVolunteerPage />} />
-          <Route path="/cyber-volunteer/register" element={<CyberVolunteerRegistrationPage />} />
-          <Route path="/contact" element={<ContactUsPage />} />
 
           {/* Fallback for tracking/other links */}
           <Route path="/track" element={<LoginPage />} /> 
@@ -83,9 +76,6 @@ export default function App() {
         <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/complaints" element={<AdminComplaints />} />
-          <Route path="/admin/volunteer-registrations" element={<AdminVolunteerRegistrations />} />
-          <Route path="/admin/volunteers" element={<AdminVolunteers />} />
-          <Route path="/admin/suspects" element={<AdminSuspects />} />
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
         </Route>
 
