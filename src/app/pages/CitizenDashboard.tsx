@@ -4,7 +4,6 @@ import { ChevronRight, Phone, Mail, FileText, User, AlertCircle, MapPin } from '
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
-import { ChatAssistant } from '../components/ChatAssistant';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import citizenService, { ComplaintRecord } from '../../services/citizenService';
 
@@ -196,7 +195,6 @@ export function CitizenDashboard() {
       </div>
       
       {/* Global Chat Assistant */}
-      <ChatAssistant />
     </div>
   );
 }

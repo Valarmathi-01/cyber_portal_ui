@@ -16,17 +16,10 @@ import { CitizenDashboard } from './pages/CitizenDashboard';
 import { CitizenComplaintDetails } from './pages/CitizenComplaintDetails';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { PoliceDashboard } from './pages/PoliceDashboard';
-import { SuspectIdentifierSearch } from './pages/SuspectIdentifierSearch';
-import { ReportSuspect } from './pages/ReportSuspect';
-import { CyberVolunteerPage } from './pages/CyberVolunteerPage';
-import { CyberVolunteerRegistrationPage } from './pages/CyberVolunteerRegistrationPage';
 import { ContactUsPage } from './pages/ContactUsPage';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminComplaints from './pages/admin/AdminComplaints';
-import AdminVolunteers from './pages/admin/AdminVolunteers';
-import AdminVolunteerRegistrations from './pages/admin/AdminVolunteerRegistrations';
-import AdminSuspects from './pages/admin/AdminSuspects';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
 import { Toaster } from 'sonner';
 

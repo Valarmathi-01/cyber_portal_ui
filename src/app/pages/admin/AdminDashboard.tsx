@@ -17,7 +17,6 @@ import {
 import { FileText, Users, UserX, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import { DashboardStats, AdminComplaint, getDashboardStats, getAllComplaints, getSuspectReportList, getVolunteersList } from '../../../services/adminService';
-import { volunteerApprovedList } from '../../../services/volunteerService';
 import { toast } from 'sonner';
 
 const COLORS = ['#F97316', '#3B82F6', '#10B981', '#EF4444', '#8B5CF6'];
@@ -60,18 +59,13 @@ export default function AdminDashboard() {
       };
 
       // Fetch all in parallel but handle errors individually
-      const [statsData, complaintsData, suspectsData, volunteersData, approvedVolunteersData] = await Promise.all([
+      const [statsData, complaintsData] = await Promise.all([
         safeFetch(getDashboardStats(), defaultStats),
         safeFetch(getAllComplaints(), []),
-        safeFetch(getSuspectReportList(), []),
-        safeFetch(getVolunteersList(), []),
-        safeFetch(volunteerApprovedList(), [])
       ]);
       
       setStats(statsData);
-      setSuspectCount(suspectsData.length);
-      setVolunteerCount(volunteersData.length);
-      setApprovedVolunteerCount(approvedVolunteersData.length);
+
       
       // Process Recent Complaints (Sorted by Incident Date or Created At)
       const sortedComplaints = Array.isArray(complaintsData) ? complaintsData
