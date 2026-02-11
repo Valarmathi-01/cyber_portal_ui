@@ -379,7 +379,7 @@ export function LandingPage() {
       </section>
 
       {/* Floating Chatbot */}
-      <div className="fixed bottom-10 right-6 z-50 flex flex-col items-end space-y-4">
+      {/* <div className="fixed bottom-10 right-6 z-50 flex flex-col items-end space-y-4">
         {isChatOpen && (
           <div className="bg-white rounded-lg shadow-xl border border-slate-200 w-80 md:w-96 overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200 flex flex-col max-h-[550px]">
             <div className="bg-orange-600 p-4 flex justify-between items-center text-white flex-shrink-0">
@@ -420,7 +420,7 @@ export function LandingPage() {
                   </div>
                   
                   {/* Quick Reply Buttons */}
-                  {msg.options && (
+                  {/* {msg.options && (
                     <div className="flex flex-wrap gap-2 mt-2 max-w-[90%]">
                       {msg.options.map((opt) => (
                         <button
@@ -512,7 +512,8 @@ export function LandingPage() {
         >
           {isChatOpen ? <X className="h-7 w-7 text-white" /> : <MessageCircle className="h-7 w-7 text-white" />}
         </Button>
-      </div>
+      </div> */} 
+      {/* } */}
     </div>
   );
 }

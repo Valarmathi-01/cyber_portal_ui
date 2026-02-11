@@ -40,9 +40,9 @@ export default function AdminLayout() {
   const navItems = [
     { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
     { label: 'Complaint Management', path: '/admin/complaints', icon: FileText },
-    { label: 'Volunteer Registrations', path: '/admin/volunteer-registrations', icon: UserCheck },
-    { label: 'Volunteer List', path: '/admin/volunteers', icon: Users },
-    { label: 'Suspect Report List', path: '/admin/suspects', icon: UserX },
+    // { label: 'Volunteer Registrations', path: '/admin/volunteer-registrations', icon: UserCheck },
+    // { label: 'Volunteer List', path: '/admin/volunteers', icon: Users },
+    // { label: 'Suspect Report List', path: '/admin/suspects', icon: UserX },
   ];
 
   return (

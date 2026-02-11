@@ -148,20 +148,20 @@ export default function AdminDashboard() {
       color: 'text-green-600', 
       bg: 'bg-green-50' 
     },
-    { 
-      title: 'Suspect Reports', 
-      value: suspectCount.toString(),
-      icon: UserX, 
-      color: 'text-red-600', 
-      bg: 'bg-red-50' 
-    },
-    { 
-      title: 'Approved Volunteers', 
-      value: approvedVolunteerCount.toString(),
-      icon: Users, 
-      color: 'text-purple-600', 
-      bg: 'bg-purple-50' 
-    },
+    // { 
+    //   title: 'Suspect Reports', 
+    //   value: suspectCount.toString(),
+    //   icon: UserX, 
+    //   color: 'text-red-600', 
+    //   bg: 'bg-red-50' 
+    // },
+    // { 
+    //   title: 'Approved Volunteers', 
+    //   value: approvedVolunteerCount.toString(),
+    //   icon: Users, 
+    //   color: 'text-purple-600', 
+    //   bg: 'bg-purple-50' 
+    // },
   ];
 
   return (
