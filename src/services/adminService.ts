@@ -19,6 +19,8 @@ export interface AdminComplaint {
     firNumber: string | null;
     createdAt: string;
     updatedAt: string;
+    label:string;
+    officerName:string | null;
 }
 
 export interface GetAllComplaintsResponse {
@@ -87,7 +89,7 @@ export interface Volunteer {
     type: string;
     date: string;
     status: string;
-    type: string;
+
 }
 
 export interface GetVolunteersResponse {
@@ -181,12 +183,45 @@ export const getAllPoliceOfficers = async (): Promise<GetPoliceOfficersResponse>
         throw error;
     }
 };
+// export const generateFir = async (
+//     complaintId: number,
+//     officerId: number,
+//     firFile: File
+// ): Promise<any> => {
+//     try {
+//         const formData = new FormData();
+//         formData.append("firDocument", firFile);
 
+//         const response = await apiService.post<any>(
+//             `/api/police/complaints/${complaintId}/${officerId}/upload-fir`,
+//             formData,
+//             {
+//                 headers: {
+//                     "Content-Type": "multipart/form-data",
+//                 },
+//             }
+//         );
+
+//         return response.data;
+//     } catch (error) {
+//         throw error;
+//     }
+// };
 export const generateFir = async (complaintId: number, officerId: number): Promise<any> => {
-    try {
-        const response = await apiService.post<any>(`/api/police/complaints/${complaintId}/upload-fir?officerId=${officerId}`, {});
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
+    return apiService.post(
+        `/api/police/complaints/${complaintId}/upload-fir`,
+        {},
+        { params: { officerId } }
+    );
 };
+
+
+
+// export const generateFir = async (complaintId: number, officerId: number): Promise<any> => {
+//     try {
+//         const response = await apiService.post<any>(`/api/police/complaints/${complaintId}/${officerId}/upload-fir`, {});
+//         return response.data;
+//     } catch (error) {
+//         throw error;
+//     }
+// };

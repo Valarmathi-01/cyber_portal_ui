@@ -373,6 +373,7 @@ function StepIncident({ onNext, onPrev, defaultValues }: any) {
       mode="single"
       selected={field.value}
       onSelect={field.onChange}
+      disabled={{ after: new Date() }}
       initialFocus
     />
   </PopoverContent>
