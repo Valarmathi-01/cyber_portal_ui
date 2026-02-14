@@ -5,8 +5,8 @@ export interface AdminComplaint {
     acknowledgementNo: string;
     category: string;
     incidentDate: string | null;
-    reasonForDelay: string | null;
-    additionalInfo: string | null;
+    // reasonForDelay: string | null;
+    incidentDescription: string | null;
     incidentLocation: string | null;
     state: string | null;
     district: string | null;
@@ -207,21 +207,27 @@ export const getAllPoliceOfficers = async (): Promise<GetPoliceOfficersResponse>
 //         throw error;
 //     }
 // };
-export const generateFir = async (complaintId: number, officerId: number): Promise<any> => {
-    return apiService.post(
-        `/api/police/complaints/${complaintId}/upload-fir`,
-        {},
-        { params: { officerId } }
-    );
+export const generateFir = async (
+  complaintId: number,
+  officerId: number,
+  file: File
+): Promise<any> => {
+
+  const formData = new FormData();
+  formData.append("firDocument", file);
+
+  return apiService.post(
+    `/api/police/complaints/${complaintId}/${officerId}/upload-fir`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }
+  );
 };
 
 
 
-// export const generateFir = async (complaintId: number, officerId: number): Promise<any> => {
-//     try {
-//         const response = await apiService.post<any>(`/api/police/complaints/${complaintId}/${officerId}/upload-fir`, {});
-//         return response.data;
-//     } catch (error) {
-//         throw error;
-//     }
-// };
+
+

@@ -54,6 +54,9 @@ export interface VolunteerDto {
   cityOrVillage: string | null;
   pincode: string | null;
   approved: boolean;
+  createdAt:string;
+  updatedAt:string;
+
 }
 
 export interface GetVolunteerListResponse {
@@ -61,23 +64,43 @@ export interface GetVolunteerListResponse {
   message: string;
   data: VolunteerDto[];
 }
+export const register = async (
+  data: VolunteerRegistrationDto,
+  resume: File,
+  photo: File
+) => {
+  const formData = new FormData();
 
-export const register = async (data: VolunteerRegistrationDto, resume: File, photo: File) => {
-    const formData = new FormData();
+  // ✅ Send JSON correctly as application/json
+  formData.append(
+    "data",
+    new Blob([JSON.stringify(data)], { type: "application/json" })
+  );
 
-    // important: backend expects key name "data"
-    formData.append("data", JSON.stringify(data)); // ✅ string is enough
+  formData.append("resume", resume);
+  formData.append("photo", photo);
 
-    formData.append("resume", resume);
-    formData.append("photo", photo);
-
-    return apiService.post("/api/volunteers/register", formData, {
-      headers: {
-        // ✅ must be multipart
-        "Content-Type": "multipart/form-data",
-      },
-    });
+  // ✅ DO NOT manually set Content-Type
+  return apiService.post("/api/volunteers/register", formData);
 };
+
+
+// export const register = async (data: VolunteerRegistrationDto, resume: File, photo: File) => {
+//     const formData = new FormData();
+
+//     // important: backend expects key name "data"
+//     formData.append("data", JSON.stringify(data)); // ✅ string is enough
+
+//     formData.append("resume", resume);
+//     formData.append("photo", photo);
+
+//     return apiService.post("/api/volunteers/register", formData, {
+//       headers: {
+//         // ✅ must be multipart
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
+// };
 
 export const getVolunteerList = async (status?: string): Promise<GetVolunteerListResponse> => {
     const url = status ? `/api/volunteers/${status}` : '/api/volunteers/list';
@@ -96,5 +119,5 @@ export const updateVolunteerStatus = async (id: number, status: string) => {
 };
 
 export const exportList = async () => {
-    return apiService.getBlob('/api/volunteers/approved/csv');
+    return apiService.getBlob('/api/volunteers/approved/excel');
 };

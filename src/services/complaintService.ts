@@ -6,7 +6,7 @@ export interface ComplaintRequest {
   category: string; // Enum-like string e.g., "BANKING_FRAUD"
   incidentDate: string; // ISO format
   reasonForDelay?: string;
-  additionalInfo?: string;
+  incidentDescription?: string;
   incidentLocation?: string;
   state: string;
   district: string;

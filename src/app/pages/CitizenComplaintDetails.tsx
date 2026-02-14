@@ -35,33 +35,46 @@ export function CitizenComplaintDetails() {
   }, [id]);
 
   const handleDownloadFir = async () => {
-    if (!complaint?.firId) {
-      toast.error("FIR ID not found");
-      return;
+  if (!complaint?.id) {
+    toast.error("Complaint ID not found");
+    return;
+  }
+
+  try {
+    const toastId = toast.loading("Downloading FIR...");
+
+    const blob = await citizenService.downloadFir(complaint.id);
+
+    if (!blob || blob.size === 0) {
+      throw new Error("Empty file received");
     }
 
-    try {
-      const toastId = toast.loading("Downloading FIR...");
-      const blob = await citizenService.downloadFir(complaint.firId);
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
 
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `FIR_${complaint.firNumber || complaint.firId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
+    // Let backend filename be used if possible
+    link.href = url;
+    link.download = `FIR_${complaint.firNumber || complaint.id}.pdf`;
 
-      link.parentNode?.removeChild(link);
-      window.URL.revokeObjectURL(url);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 
-      toast.dismiss(toastId);
-      toast.success("FIR downloaded successfully");
-    } catch (err) {
-      toast.dismiss();
-      console.error("Download failed", err);
+    toast.dismiss(toastId);
+    toast.success("FIR downloaded successfully");
+  } catch (err: any) {
+    toast.dismiss();
+    console.error("Download failed:", err);
+
+    if (err?.response?.status === 404) {
+      toast.error("FIR not available yet");
+    } else {
       toast.error("Failed to download FIR");
     }
-  };
+  }
+};
+
 
   const getStatusColor = (status: string) => {
     if (!status) return 'bg-slate-100 text-slate-700';
@@ -161,19 +174,19 @@ export function CitizenComplaintDetails() {
                     <p className="text-slate-900 font-medium">{complaint.category}</p>
                   </div>
 
-                  {complaint.additionalInfo && (
+                  {complaint.incidentDescription && (
                     <div>
-                      <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Additional Information</h3>
-                      <p className="text-slate-600 leading-relaxed text-sm">{complaint.additionalInfo}</p>
+                      <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Incident Description</h3>
+                      <p className="text-slate-600 leading-relaxed text-sm">{complaint.incidentDescription}</p>
                     </div>
                   )}
 
-                  {complaint.reasonForDelay && (
+                  {/* {complaint.reasonForDelay && (
                     <div>
                       <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Reason for Delay</h3>
                       <p className="text-slate-600 leading-relaxed text-sm">{complaint.reasonForDelay}</p>
                     </div>
-                  )}
+                  )} */}
 
                   <div className="flex flex-wrap gap-4 pt-4 border-t border-slate-50 mt-4">
                     <div className="flex items-center gap-2 text-sm text-slate-500">

@@ -3,11 +3,12 @@ import apiService from './apiService';
 // Updated ComplaintRecord based on flattened response structure
 export interface ComplaintRecord {
   id: number;
+  apiId:number;
   acknowledgementNo: string;
   category: string;
   incidentDate: string;
-  reasonForDelay: string;
-  additionalInfo: string;
+  // reasonForDelay: string;
+  incidentDescription: string;
   incidentLocation: string;
   state: string;
   district: string;
@@ -129,9 +130,9 @@ const citizenService = {
    * Download FIR document
    * Endpoint: GET /api/documents/fir/{firId}
    */
-  downloadFir: async (firId: number): Promise<Blob> => {
+  downloadFir: async (id: number): Promise<Blob> => {
     try {
-      const response = await apiService.getBlob(`/api/documents/fir/${firId}`);
+      const response = await apiService.getBlob(`/api/police/complaints/${id}/download-fir`);
       return response.data;
     } catch (error) {
       throw error;

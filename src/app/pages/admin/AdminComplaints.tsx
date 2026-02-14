@@ -13,6 +13,7 @@ import {
   getAllPoliceOfficers,
   generateFir
 } from '../../../services/adminService';
+import citizenService from '../../../services/citizenService';
 
 export default function AdminComplaints() {
   const [complaints, setComplaints] = useState<any[]>([]);
@@ -48,10 +49,11 @@ export default function AdminComplaints() {
         date: item.incidentDate ? new Date(item.incidentDate).toLocaleDateString() : new Date(item.createdAt).toLocaleDateString(),
         fullDate: item.createdAt,
         status: item.status,
-        description: item.additionalInfo || item.reasonForDelay || 'No description provided',
+        description: item.incidentDescription || 'No description provided',
         evidence: [], // API doesn't provide evidence list yet
         remarks: [],
         state: item.state,
+        label: item.label,
         assignedOfficer: item.officerName || null,
         district: item.district,
         policeStation: item.policeStation
@@ -160,6 +162,20 @@ export default function AdminComplaints() {
       default: return 'bg-slate-100 text-slate-800 border-slate-200';
     }
   };
+  const getLabelColor = (label: string) => {
+    switch (label) {
+      case 'LIKELY GENUINE':
+        return 'bg-green-100 text-green-800 border-green-200';
+
+      case 'POSSIBLY FAKE':
+        return 'bg-red-100 text-red-800 border-red-200';
+
+      default:
+        return 'bg-slate-100 text-slate-800 border-slate-200';
+    }
+  };
+
+
 
   const handleStatusChange = (newStatus: string) => {
     setSelectedComplaint({ ...selectedComplaint, status: newStatus });
@@ -271,9 +287,13 @@ export default function AdminComplaints() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border whitespace-nowrap ${getStatusColor(complaint.status)}`}>
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-xs font-medium border whitespace-nowrap ${getLabelColor(complaint.label)}`}
+                        >
                           {complaint.label}
-                        </span></td>
+                        </span>
+                      </td>
+
                       <td className="px-4 py-3 text-right">
                         <Button
                           variant="ghost"
@@ -293,7 +313,7 @@ export default function AdminComplaints() {
                                 date: new Date(item.createdAt).toLocaleDateString(),
                                 fullDate: item.createdAt,
                                 status: item.status,
-                                description: item.additionalInfo || item.reasonForDelay || 'No description provided',
+                                description: item.incidentDescription || 'No description provided',
                                 evidence: [],
                                 remarks: [],
                                 state: item.state,
@@ -320,7 +340,7 @@ export default function AdminComplaints() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
+                    <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
                       No complaints found matching your criteria.
                     </td>
                   </tr>
@@ -462,7 +482,7 @@ export default function AdminComplaints() {
                                     </div>
                                     <div className="flex flex-col">
                                       <span className={`text-xs font-medium truncate max-w-[150px] ${selectedComplaint.firDocument ? 'text-slate-700' : 'text-slate-400'}`}>
-                                        {selectedComplaint.firDocument ? selectedComplaint.firDocument.name : 'No Document Available'}
+                                        {selectedComplaint.firDocument ? selectedComplaint.firDocument.name :'fir document' }
                                       </span>
                                       {selectedComplaint.firDocument && (
                                         <span className="text-[10px] text-slate-500">
@@ -471,27 +491,35 @@ export default function AdminComplaints() {
                                       )}
                                     </div>
                                   </div>
+                            
                                   <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    disabled={!selectedComplaint.firDocument}
-                                    className={`h-8 px-2 ${selectedComplaint.firDocument ? 'text-blue-600 hover:text-blue-800 hover:bg-blue-50' : 'text-slate-400 cursor-not-allowed'}`}
-                                    onClick={() => {
-                                      if (selectedComplaint.firDocument) {
-                                        const url = URL.createObjectURL(selectedComplaint.firDocument);
-                                        const a = document.createElement('a');
-                                        a.href = url;
-                                        a.download = selectedComplaint.firDocument.name;
-                                        document.body.appendChild(a);
-                                        a.click();
-                                        document.body.removeChild(a);
-                                        URL.revokeObjectURL(url);
-                                      }
-                                    }}
-                                  >
-                                    <Download className="w-4 h-4 mr-1" />
-                                    Download
-                                  </Button>
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-8 px-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                                      onClick={async () => {
+                                        try {
+                                          const blob = await citizenService.downloadFir(selectedComplaint.apiId);
+
+                                          const url = window.URL.createObjectURL(blob);
+                                          const a = document.createElement("a");
+                                          a.href = url;
+                                          a.download = `FIR_${selectedComplaint.apiId}.pdf`;
+                                          document.body.appendChild(a);
+                                          a.click();
+                                          document.body.removeChild(a);
+                                          window.URL.revokeObjectURL(url);
+
+                                          toast.success("FIR downloaded successfully");
+                                        } catch (error) {
+                                          console.error(error);
+                                          toast.error("Failed to download FIR");
+                                        }
+                                      }}
+                                    >
+                                      <Download className="w-4 h-4 mr-1" />
+                                      Download
+                                    </Button>
+
                                 </div>
                               </div>
                             )}
@@ -603,43 +631,49 @@ export default function AdminComplaints() {
 
                   try {
                     // Trigger FIR generation if status is changed to FIR_GENERATED
-                    const originalComplaint = complaints.find(c => c.id === selectedComplaint.id);
-                    const isNewFir = selectedComplaint.status === 'FIR_GENERATED' && originalComplaint?.status !== 'FIR_GENERATED';
+                    // const originalComplaint = complaints.find(c => c.id === selectedComplaint.id);
+                    // const isNewFir = selectedComplaint.status === 'FIR_GENERATED' && originalComplaint?.status !== 'FIR_GENERATED';
 
-                    if (isNewFir && !selectedComplaint.firGenerated) {
-                      if (!selectedComplaint.assignedOfficer) {
-                        toast.error("Please assign an officer first");
-                        return;
-                      }
+                    // if (isNewFir && !selectedComplaint.firGenerated) {
+                    //   if (!selectedComplaint.assignedOfficer) {
+                    //     toast.error("Please assign an officer first");
+                    //     return;
+                    //   }
 
-                      // We need the officer ID, but we only have the name in selectedComplaint
-                      try {
-                        toast.info("Generating FIR...");
-                        const officersResponse = await getAllPoliceOfficers();
-                        // Find officer by name from the list
-                        let officerData: any[] = [];
-                        if (Array.isArray(officersResponse.data)) {
-                          officerData = officersResponse.data;
-                        } else if (officersResponse.data && Array.isArray((officersResponse.data as any).data)) {
-                          officerData = (officersResponse.data as any).data;
-                        }
+                    //   // We need the officer ID, but we only have the name in selectedComplaint
+                    //   try {
+                    //     toast.info("Generating FIR...");
+                    //     const officersResponse = await getAllPoliceOfficers();
+                    //     // Find officer by name from the list
+                    //     let officerData: any[] = [];
+                    //     if (Array.isArray(officersResponse.data)) {
+                    //       officerData = officersResponse.data;
+                    //     } else if (officersResponse.data && Array.isArray((officersResponse.data as any).data)) {
+                    //       officerData = (officersResponse.data as any).data;
+                    //     }
 
-                        const officer = officerData.find((o: any) => o.name === selectedComplaint.assignedOfficer);
+                    //     const officer = officerData.find((o: any) => o.name === selectedComplaint.assignedOfficer);
 
-                        if (officer && officer.id) {
-                          await generateFir(selectedComplaint.apiId, officer.id);
-                          toast.success("FIR Generated");
-                        } else {
-                          console.error("Officer not found or invalid ID:", officer);
-                          toast.error("Could not find valid officer details for FIR generation");
-                          return;
-                        }
-                      } catch (firError) {
-                        console.error("FIR Generation failed:", firError);
-                        toast.error("Failed to generate FIR. Please try again.");
-                        return;
-                      }
-                    }
+                    //     if (officer && officer.id) {
+                    //       await generateFir(
+                    //         selectedComplaint.apiId,
+                    //         officer.id,
+                    //         selectedComplaint.firDocument
+                    //       );
+
+                    //       // await generateFir(selectedComplaint.apiId, officer.id,firDocment.firFile);
+                    //       toast.success("FIR Generated");
+                    //     } else {
+                    //       console.error("Officer not found or invalid ID:", officer);
+                    //       toast.error("Could not find valid officer details for FIR generation");
+                    //       return;
+                    //     }
+                    //   } catch (firError) {
+                    //     console.error("FIR Generation failed:", firError);
+                    //     toast.error("Failed to generate FIR. Please try again.");
+                    //     return;
+                    //   }
+                    // }
 
                     await updateStatus(selectedComplaint.apiId, {
                       status: selectedComplaint.status,
@@ -648,15 +682,16 @@ export default function AdminComplaints() {
                     });
 
                     toast.success('Status updated successfully');
+                    await fetchComplaints();
 
-                    // Update local state
-                    setComplaints((prev) =>
-                      prev.map(c => c.id === selectedComplaint.id ? {
-                        ...selectedComplaint,
-                        status: selectedComplaint.status,
-                        assignedOfficer: selectedComplaint.assignedOfficer
-                      } : c)
-                    );
+                    // // Update local state
+                    // setComplaints((prev) =>
+                    //   prev.map(c => c.id === selectedComplaint.id ? {
+                    //     ...selectedComplaint,
+                    //     status: selectedComplaint.status,
+                    //     assignedOfficer: selectedComplaint.assignedOfficer
+                    //   } : c)
+                    // );
 
                     setSelectedComplaint(null);
                   } catch (err) {
@@ -733,7 +768,12 @@ function OfficerAssignmentModal({ complaintId, state, onAssign, onCancel, isFirG
       try {
         toast.loading("Generating FIR...");
         // In a real scenario, we might want to upload the firFile here as well
-        await generateFir(complaintId, selectedOfficer.id);
+        await generateFir(
+          complaintId,
+          selectedOfficer.id,
+          firFile!
+        );
+
         toast.dismiss();
         toast.success("FIR Generated successfully");
         // Pass true to indicate FIR was generated and include the file

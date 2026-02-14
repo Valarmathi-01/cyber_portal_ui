@@ -71,7 +71,9 @@ const getStepDate = (stepStatus: 'completed' | 'current' | 'pending', offsetDays
   }) + ', ' + '10:30 AM'; // Using static time for consistency in mock
 };
 
-export function ComplaintTimeline({ currentStatus, complaintId, onDownloadFir }: { currentStatus?: string, complaintId?: number, onDownloadFir?: () => void }) {
+export function ComplaintTimeline(
+  { currentStatus, complaintId, onDownloadFir }: 
+  { currentStatus?: string, complaintId?: number, onDownloadFir?: () => void }) {
   
   // State for real data
   const [realEvents, setRealEvents] = useState<TimelineEvent[]>([]);
@@ -210,7 +212,11 @@ export function ComplaintTimeline({ currentStatus, complaintId, onDownloadFir }:
   };
 
   // Decide which steps to render
-  const steps = (complaintId && realEvents.length > 0) ? getRealSteps() : getLegacySteps();
+ const steps: TimelineStep[] =
+  (complaintId && realEvents.length > 0)
+    ? getRealSteps()
+    : getLegacySteps();
+
 
   if (complaintId && isLoading && realEvents.length === 0) {
       return <div className="text-sm text-slate-500 py-4">Loading timeline...</div>;

@@ -203,18 +203,18 @@ export function ReportCrimePage() {
                         };
 
                         // Construct DateTime
-const incidentDateTime =
-  data.incidentDate && data.incidentTime
-    ? `${format(new Date(data.incidentDate), "yyyy-MM-dd")}T${data.incidentTime}:00`
-    : new Date().toISOString().slice(0, 19);
+                        const incidentDateTime =
+                          data.incidentDate && data.incidentTime
+                            ? `${format(new Date(data.incidentDate), "yyyy-MM-dd")}T${data.incidentTime}:00`
+                            : new Date().toISOString().slice(0, 19);
 
 
                         // Construct the payload for the API based on the new requirements
                         const payload = {
                           category: getCategoryCode(data.category),
                           incidentDate: incidentDateTime,
-                          reasonForDelay: "I was not aware of the cyber crime reporting portal", // Default/Hardcoded as per request
-                          additionalInfo: data.incidentDescription || "Money debited through fake UPI link",
+                          // reasonForDelay: "I was not aware of the cyber crime reporting portal", // Default/Hardcoded as per request
+                          incidentDescription: data.incidentDescription || "Money debited through fake UPI link",
                           incidentLocation: "Chennai", // Hardcoded/Mapped as per request
                           state: "TAMIL_NADU", // Hardcoded as per request
                           district: "Chennai", // Hardcoded as per request
@@ -260,7 +260,7 @@ const incidentDateTime =
                           date: payload.incidentDate,
                           status: 'SUBMITTED',
                           priority: 'Medium',
-                          description: payload.additionalInfo,
+                          description: payload.incidentDescription,
                           officer: "Pending Assignment",
                           evidence: [],
                           remarks: [],

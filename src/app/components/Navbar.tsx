@@ -48,7 +48,7 @@ export function Navbar() {
             
             {localStorage.getItem('adminAuthenticated') === 'true' ? (
               <>
-                <Link to="/admin/dashboard" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Dashboard</Link>
+                {/* <Link to="/admin/dashboard" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Dashboard</Link> */}
                 <Link to="/admin/analytics" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Analytics</Link>
                 <Link to="/admin/volunteers" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Volunteers</Link>
                 <Link to="/admin/suspects" className="text-slate-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Suspects</Link>

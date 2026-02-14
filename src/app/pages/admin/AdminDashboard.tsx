@@ -322,7 +322,7 @@ export default function AdminDashboard() {
                       </h4>
                       <p className="text-xs text-red-700 mt-1">
                         Reported by {complaint.citizenName || 'Anonymous'} in {complaint.state || 'Unknown State'} on {complaint.incidentDate ? new Date(complaint.incidentDate).toLocaleDateString() : new Date(complaint.createdAt).toLocaleDateString()}.
-                        {complaint.additionalInfo && ` Note: ${complaint.additionalInfo.substring(0, 60)}${complaint.additionalInfo.length > 60 ? '...' : ''}`}
+                        {complaint.incidentDescription && ` Note: ${complaint.incidentDescription.substring(0, 60)}${complaint.incidentDescription.length > 60 ? '...' : ''}`}
                       </p>
                     </div>
                   </div>

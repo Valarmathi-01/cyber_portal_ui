@@ -37,7 +37,8 @@ export default function AdminVolunteers() {
         type: v.volunteerType ? v.volunteerType.replace(/_/g, ' ') : 'Volunteer',
         // API doesn't provide application date, defaulting to N/A or today if preferred.
         // For now using "Recent" or leaving as N/A to indicate missing data.
-        date: 'N/A', 
+        date: v.createdAt.split('T')[0],
+ 
         status: (v.approved || v.status?.toUpperCase() === 'APPROVED') ? 'Approved' : (v.status || 'Pending'),
         originalData: v
       }));
