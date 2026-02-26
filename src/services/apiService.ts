@@ -3,8 +3,9 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 // Create a centralized Axios instance
 // Base URL is set to http://192.168.1.72:8085/ as per requirements
 const api: AxiosInstance = axios.create({
-  // baseURL: 'http://localhost:8085/',
-  baseURL:'http://192.168.1.82:8085/',
+  // baseURL:'https://architectonically-unscrubbed-alfreda.ngrok-free.dev',
+
+  baseURL:'http://192.168.1.22:8085/',
   headers: {
     // 'Content-Type': 'application/json',
     'ngrok-skip-browser-warning': 'true',
